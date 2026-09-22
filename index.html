@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poramet Nilchan | Tech Business Analyst</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fcf8;
+            color: #173b2a;
+            -webkit-font-smoothing: antialiased;
+        }
+        .section-divider {
+            border-top: 1px solid #d8eadc;
+            margin: 3rem 0;
+        }
+        .text-gray-900 { color: #14532d !important; }
+        .text-gray-800 { color: #166534 !important; }
+        .text-gray-700 { color: #285c3d !important; }
+        .text-gray-600 { color: #47745a !important; }
+        .text-gray-500 { color: #62856c !important; }
+        .text-gray-400 { color: #7a9b82 !important; }
+        .text-gray-300 { color: #a8c9ae !important; }
+        .bg-white { background-color: #ffffff !important; }
+        .bg-gray-100 { background-color: #eaf6ed !important; }
+        .bg-gray-200 { background-color: #d8eadc !important; }
+        .bg-gray-800 { background-color: #166534 !important; }
+        .border-gray-100 { border-color: #e4f1e6 !important; }
+        .border-gray-200 { border-color: #d8eadc !important; }
+        .border-white { border-color: #ffffff !important; }
+        html { scroll-behavior: smooth; }
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            z-index: 60;
+            background: linear-gradient(90deg, #166534, #4ade80);
+            transition: width 120ms ease-out;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 700ms ease, transform 700ms ease;
+        }
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .experience-item {
+            transition: transform 250ms ease, border-color 250ms ease;
+        }
+        .experience-item:hover,
+        .experience-item.is-expanded {
+            transform: translateX(6px);
+            border-color: #86c996;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1; transform: none; transition: none; }
+            .experience-item { transition: none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        
+        const IconPhone = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 text-gray-500"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        );
+
+        const IconMail = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 text-gray-500"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+        );
+
+        const IconLinkedin = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 text-gray-500"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+        );
+
+        const IconGithub = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 text-gray-500"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+        );
+
+        const App = () => {
+            const [expandedExperience, setExpandedExperience] = React.useState(0);
+            const [scrollProgress, setScrollProgress] = React.useState(0);
+
+            React.useEffect(() => {
+                const updateScrollProgress = () => {
+                    const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    const progress = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
+                    setScrollProgress(progress);
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) entry.target.classList.add('is-visible');
+                    });
+                }, { threshold: 0.12 });
+
+                document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+                window.addEventListener('scroll', updateScrollProgress, { passive: true });
+                updateScrollProgress();
+
+                return () => {
+                    observer.disconnect();
+                    window.removeEventListener('scroll', updateScrollProgress);
+                };
+            }, []);
+            
+            const experiences = [
+                {
+                    role: "Junior Software Developer / BA Trainee",
+                    company: "Generation Thailand",
+                    period: "Jun 2026 - Oct 2026",
+                    descriptions: [
+                        "Analyzed end-user requirements and business logic to design responsive User Interfaces (UI) and user flows using React.js.",
+                        "Translated functional requirements into technical specifications, designing RESTful API endpoints and NoSQL database schemas (MongoDB) for seamless backend architecture.",
+                        "Collaborated closely with cross-functional team members in an Agile/Scrum environment to build and deploy real-world MERN Stack web application projects.",
+                        "Applied system debugging, integration testing, and clean code standards to ensure overall product quality aligned with business requirements."
+                    ]
+                },
+                {
+                    role: "Senior Lifestyle Concierge & Acting Team Leader",
+                    company: "Aspire Lifestyles Services (Thailand)",
+                    period: "Jan 2023 - Nov 2025",
+                    descriptions: [
+                        "Gathered client requirements and identified operational friction points to optimize service workflows, ensuring strict adherence to SLAs and SOPs.",
+                        "Acted as a core liaison between clients and cross-functional operational teams to diagnose and resolve complex technical and service delivery challenges.",
+                        "Evaluated operational performance metrics and conducted gap analysis to draft comprehensive performance reports for management review.",
+                        "Coached and trained team members on updated system protocols, minimizing service errors and boosting operational efficiency."
+                    ]
+                },
+                {
+                    role: "Lifestyle Concierge",
+                    company: "Aspire Lifestyles Services (Thailand)",
+                    period: "Aug 2018 - Dec 2023",
+                    descriptions: [
+                        "Managed multi-channel client inquiries and systematically documented case activities and user workflows within enterprise CRM platforms.",
+                        "Facilitated clear communication between customers and technical specialists to accurately diagnose root causes and expedite issue resolution.",
+                        "Tracked case progression and conducted follow-up analysis to maintain high levels of client satisfaction."
+                    ]
+                },
+                {
+                    role: "Medical Receptionist",
+                    company: "Chiangmai Klaimor Hospital",
+                    period: "Oct 2016 - Jun 2018",
+                    descriptions: [
+                        "Coordinated front-desk operations, patient registration, and medical documentation, gaining first-hand experience with healthcare operations.",
+                        "Communicated directly with medical staff and patients, ensuring accurate intake data entry and smooth operational flow."
+                    ]
+                }
+            ];
+
+            const skills = {
+                ba: ["Requirement Gathering", "BRD / User Stories / Use Cases Creation", "Process Flow Design", "Gap Analysis", "Pain Point Identification", "Agile/Scrum Framework", "UAT Support"],
+                tech: ["MERN Stack (MongoDB, Express.js, React.js, Node.js)", "RESTful APIs", "Git/GitHub", "Authentication (JWT/OAuth)", "Figma Workflow"],
+                soft: ["Cross-Functional Coordination", "Stakeholder Communication", "Problem-Solving", "Operations Supervision", "Customer Service & CRM"]
+            };
+
+            return (
+                <div className="min-h-screen pb-20">
+                    <div className="scroll-progress" style={{ width: `${scrollProgress}%` }} aria-hidden="true"></div>
+                    {/* Header */}
+                    <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+                        <div className="max-w-5xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center">
+                            <h1 className="text-xl font-bold tracking-tight text-gray-900">PORAMET NILCHAN</h1>
+                            <span className="text-sm font-medium text-gray-500 uppercase tracking-widest mt-2 md:mt-0">Tech Business Analyst</span>
+                        </div>
+                    </header>
+
+                    <main className="max-w-5xl mx-auto px-6 pt-16">
+                        
+                        {}
+                        <section className="mb-20 reveal">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                                <div className="md:col-span-1">
+                                    <div className="sticky top-32">
+                                        <div className="w-32 h-32 bg-gray-200 rounded-full mb-6 mx-auto md:mx-0 overflow-hidden border-4 border-white shadow-lg">
+                                            <img src="asset/image/my_photo.jpg" alt="Poramet Nilchan" className="w-full h-full object-cover" />
+                                        </div>
+                                        <h2 className="text-4xl font-bold text-gray-900 leading-tight mb-4 text-center md:text-left">Tech <br/> Business <br/> Analyst.</h2>
+                                        
+                                        <div className="space-y-3 mt-8 text-sm text-gray-600">
+                                            <a href="tel:+66956242535" className="flex items-center hover:text-gray-900 transition-colors">
+                                                <IconPhone /> +6695-624-2535
+                                            </a>
+                                            <a href="mailto:porametnilchan@gmail.com" className="flex items-center hover:text-gray-900 transition-colors">
+                                                <IconMail /> porametnilchan@gmail.com
+                                            </a>
+                                            <a href="https://linkedin.com/in/poramet-nilchan" target="_blank" className="flex items-center hover:text-gray-900 transition-colors">
+                                                <IconLinkedin /> LinkedIn Profile
+                                            </a>
+                                            <a href="https://github.com/Poramet-N" target="_blank" className="flex items-center hover:text-gray-900 transition-colors">
+                                                <IconGithub /> GitHub Profile
+                                            </a>
+                                            <button onClick={() => document.getElementById('experience').scrollIntoView({ behavior: 'smooth' })} className="mt-6 inline-flex items-center text-sm font-semibold text-green-700 hover:text-green-900 transition-colors">
+                                                Explore my experience <span className="ml-2" aria-hidden="true">↓</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="md:col-span-2 space-y-6">
+                                    <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400">About Me</h3>
+                                    <p className="text-lg text-gray-700 leading-relaxed">
+                                        Analytical and detail-oriented <strong className="font-semibold text-gray-900">Tech Business Analyst</strong> candidate with a strong background in Healthcare and over 7 years of experience in cross-functional coordination, operational workflow optimization, and requirement gathering.
+                                    </p>
+                                    <p className="text-lg text-gray-700 leading-relaxed">
+                                        Enhanced by intensive technical training in <strong className="font-semibold text-gray-900">Full-Stack Web Development (MERN Stack)</strong>, I bridge the gap between healthcare/business stakeholders and software development teams. Skilled in translating user pain points into BRDs, User Stories, and Process Flows to deliver scalable healthcare technology systems.
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div className="section-divider"></div>
+
+                        {}
+                        <section id="experience" className="mb-20 reveal">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                                <div className="md:col-span-1">
+                                    <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 sticky top-32">Experience</h3>
+                                </div>
+                                <div className="md:col-span-2 space-y-12">
+                                    {experiences.map((exp, index) => {
+                                        const isExpanded = expandedExperience === index;
+                                        const visibleDescriptions = isExpanded ? exp.descriptions : exp.descriptions.slice(0, 2);
+
+                                        return (
+                                        <div key={index} className={`relative pl-6 border-l border-gray-200 experience-item ${isExpanded ? 'is-expanded' : ''}`}>
+                                            <div className="absolute w-3 h-3 bg-gray-200 rounded-full -left-[6.5px] top-2 border-2 border-white"></div>
+                                            <h4 className="text-xl font-bold text-gray-900">{exp.role}</h4>
+                                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-1 mb-4">
+                                                <span className="text-gray-800 font-medium">{exp.company}</span>
+                                                <span className="text-sm text-gray-500 font-mono mt-1 sm:mt-0">{exp.period}</span>
+                                            </div>
+                                            <ul className="space-y-3">
+                                                {visibleDescriptions.map((desc, i) => (
+                                                    <li key={i} className="text-gray-600 text-sm leading-relaxed flex items-start">
+                                                        <span className="mr-2 text-gray-400 mt-0.5">•</span>
+                                                        <span>{desc}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                            {exp.descriptions.length > 2 && (
+                                                <button onClick={() => setExpandedExperience(isExpanded ? -1 : index)} aria-expanded={isExpanded} className="mt-4 text-xs font-semibold uppercase tracking-wider text-green-700 hover:text-green-900 transition-colors">
+                                                    {isExpanded ? 'Show less ↑' : 'Show details ↓'}
+                                                </button>
+                                            )}
+                                        </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </section>
+
+                        <div className="section-divider"></div>
+
+                        {}
+                        <section className="mb-20 reveal">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                                <div className="md:col-span-1">
+                                    <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 sticky top-32">Expertise & Skills</h3>
+                                </div>
+                                <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
+                                    
+                                    <div>
+                                        <h4 className="text-md font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">Business Analysis</h4>
+                                        <ul className="space-y-2">
+                                            {skills.ba.map((skill, i) => (
+                                                <li key={i} className="text-gray-600 text-sm flex items-center">
+                                                    <span className="w-1.5 h-1.5 bg-gray-300 rounded-full mr-3"></span>{skill}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h4 className="text-md font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">Technical Stack</h4>
+                                        <ul className="space-y-2">
+                                            {skills.tech.map((skill, i) => (
+                                                <li key={i} className="text-gray-600 text-sm flex items-center">
+                                                    <span className="w-1.5 h-1.5 bg-gray-300 rounded-full mr-3"></span>{skill}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+                                    <div className="sm:col-span-2 mt-4">
+                                        <h4 className="text-md font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">Soft Skills & Languages</h4>
+                                        <div className="flex flex-wrap gap-2">
+                                            {skills.soft.map((skill, i) => (
+                                                <span key={i} className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">{skill}</span>
+                                            ))}
+                                            <span className="px-3 py-1 bg-gray-800 text-white text-xs rounded-full">English (TOEIC 685)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div className="section-divider"></div>
+
+                        {}
+                        <section className="reveal">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                                <div className="md:col-span-1">
+                                    <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 sticky top-32">Education & Certifications</h3>
+                                </div>
+                                <div className="md:col-span-2">
+                                    <div className="mb-10">
+                                        <h4 className="text-xl font-bold text-gray-900">Bachelor of Public Health</h4>
+                                        <div className="flex justify-between items-center mt-1">
+                                            <span className="text-gray-800">Mae Fah Luang University</span>
+                                            <span className="text-sm text-gray-500 font-mono">2012 - 2016</span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h4 className="text-lg font-bold text-gray-900 mb-4">Certificates</h4>
+                                        <ul className="space-y-4">
+                                            <li className="flex items-start">
+                                                <svg className="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                                                <div>
+                                                    <p className="text-gray-900 font-medium">TOEIC Certificate (Score: 685)</p>
+                                                    <p className="text-sm text-gray-500">Educational Testing Service (ETS)</p>
+                                                </div>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <svg className="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                                                <div>
+                                                    <p className="text-gray-900 font-medium">Mastering AI-Powered Design & Productivity Canva</p>
+                                                    <p className="text-sm text-gray-500">Chulalongkorn University</p>
+                                                </div>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <svg className="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                                                <div>
+                                                    <p className="text-gray-900 font-medium">Fundamental of Personal Data Protection (PDPA)</p>
+                                                    <p className="text-sm text-gray-500">DBC GROUP</p>
+                                                </div>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <svg className="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                                                <div>
+                                                    <p className="text-gray-900 font-medium">Security Awareness Training</p>
+                                                    <p className="text-sm text-gray-500">Aspire Lifestyles Services</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                    </main>
+                    
+                    {}
+                    <footer className="max-w-5xl mx-auto px-6 mt-24 border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                        <p>© 2024 Poramet Nilchan. All rights reserved.</p>
+                        <p className="mt-2 md:mt-0">Designed & Built for Tech Business Analyst roles.</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
